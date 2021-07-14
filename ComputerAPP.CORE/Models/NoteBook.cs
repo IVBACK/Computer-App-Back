@@ -1,7 +1,6 @@
 ﻿using ComputerAPP.CORE.ValidationAttributes;
 using System.ComponentModel.DataAnnotations;
 
-
 namespace ComputerAPP.CORE.Models
 {
     [NoteBook_EnsureHasStorageOnCreation]
