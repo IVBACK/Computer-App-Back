@@ -1,5 +1,6 @@
 ﻿using ComputerAPP.CORE.Models;
 using ComputerAPP.DATA.DbContexts;
+using ComputerAPP.SERVICE.ValidationServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -10,72 +11,41 @@ namespace ComputerAPP.Api.Controllers
     [Route("api/[controller]")]
     public class DesktopsController : ControllerBase
     {
-        private readonly ComputerAppDbContext db;
+        private readonly DesktopService validation;
 
         public DesktopsController(ComputerAppDbContext db)
         {
-            this.db = db;
+            validation = new DesktopService(db);
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(db.Desktops.ToList());
+            return validation.GetDesktops();
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var noteBook = db.Desktops.Find(id);
-            if (noteBook == null)
-                return NotFound();
-
-            return Ok(noteBook);
+            return validation.GetDesktopById(id);
         }
 
         [HttpPost]
         public IActionResult Post([FromBody] Desktop desktop)
         {
-            db.Desktops.Add(desktop);
-            db.SaveChanges();
-
-            return CreatedAtAction(nameof(GetById),
-                new { id = desktop.DesktopId },
-                desktop);
+            return validation.PostDesktop(desktop);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, NoteBook noteBook)
+        public IActionResult Put(int id, Desktop desktop)
         {
-            if (id != noteBook.NoteBookId) return BadRequest();
-
-            db.Entry(noteBook).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (System.Exception)
-            {
-                if (db.Desktops.Find(id) == null)
-                    return NotFound();
-                throw;
-            }
-
-            return NoContent();
+            return validation.PutDesktop(id, desktop);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var desktop = db.Desktops.Find(id);
-            if (desktop == null)
-                return NotFound();
-
-            db.Desktops.Remove(desktop);
-            db.SaveChanges();
-
-            return Ok(desktop);
+            return validation.DeleteDesktop(id);
         }
     }
 }

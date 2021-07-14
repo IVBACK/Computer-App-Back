@@ -7,7 +7,7 @@ namespace ComputerAPP.CORE.Models
     public class NoteBook
     {
         [Key]     
-        public int? NoteBookId { get; set; }
+        public int NoteBookId { get; set; }
 
         [Required]
         [StringLength(50)]

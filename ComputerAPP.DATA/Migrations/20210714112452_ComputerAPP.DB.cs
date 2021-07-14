@@ -2,7 +2,7 @@
 
 namespace ComputerAPP.DATA.Migrations
 {
-    public partial class ComputerAppDB : Migration
+    public partial class ComputerAPPDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

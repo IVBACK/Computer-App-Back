@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComputerAPP.CORE", "Compute
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComputerAPP.DATA", "ComputerAPP.DATA\ComputerAPP.DATA.csproj", "{BD490570-9C9D-4773-BF4C-03979D3706E6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComputerAPP.SERVICE", "ComputerAPP.SERVICE\ComputerAPP.SERVICE.csproj", "{B55EE3D0-427F-4A5F-A4CC-864B7ED2BB83}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{BD490570-9C9D-4773-BF4C-03979D3706E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD490570-9C9D-4773-BF4C-03979D3706E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD490570-9C9D-4773-BF4C-03979D3706E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B55EE3D0-427F-4A5F-A4CC-864B7ED2BB83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B55EE3D0-427F-4A5F-A4CC-864B7ED2BB83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B55EE3D0-427F-4A5F-A4CC-864B7ED2BB83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B55EE3D0-427F-4A5F-A4CC-864B7ED2BB83}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
