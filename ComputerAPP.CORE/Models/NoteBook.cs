@@ -7,36 +7,36 @@ namespace ComputerAPP.CORE.Models
     [NoteBook_EnsureAllFieldsAreFullOnCreationAttribute]
     public class NoteBook
     {
+        [Key]     
         public int? NoteBookId { get; set; }
 
         [Required]
-        [StringLength(10)]
+        [StringLength(50)]
         public string Brand { get; set; }
 
         [Required]
-        [StringLength(30)]
+        [StringLength(50)]
         public string Model { get; set; }
 
         [Required]
-        [StringLength(30)]
+        [StringLength(50)]
         public string Cpu { get; set; }
 
         [Required]
-        [StringLength(30)]
+        [StringLength(50)]
         public string Gpu { get; set; }
 
         [Required]
-        [StringLength(30)]
+        [StringLength(50)]
         public string Ram { get; set; }
 
         [Required]
-        [StringLength(10)]
+        [StringLength(50)]
         public string Battery { get; set; }
 
         public bool ValidateAllFieldsFull()
         {
-            if(NoteBookId.HasValue && 
-                !string.IsNullOrWhiteSpace(Model) &&
+            if( !string.IsNullOrWhiteSpace(Model) &&
                 !string.IsNullOrWhiteSpace(Cpu) &&
                 !string.IsNullOrWhiteSpace(Gpu) &&
                 !string.IsNullOrWhiteSpace(Ram) &&

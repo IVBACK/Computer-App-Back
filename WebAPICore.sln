@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComputerAPP.CORE", "ComputerAPP.CORE\ComputerAPP.CORE.csproj", "{205E9833-8087-41F1-9297-71CA033DF008}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComputerAPP.DATA", "ComputerAPP.DATA\ComputerAPP.DATA.csproj", "{BD490570-9C9D-4773-BF4C-03979D3706E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComputerAPP.DATA", "ComputerAPP.DATA\ComputerAPP.DATA.csproj", "{BD490570-9C9D-4773-BF4C-03979D3706E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

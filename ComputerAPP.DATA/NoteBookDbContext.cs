@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ComputerAPP.DATA
 {
-    public class DataBaseContext : DbContext
+    public class NoteBookDbContext : DbContext
     {
-        public DataBaseContext(DbContextOptions options) : base(options)
+        public NoteBookDbContext(DbContextOptions options) : base(options)
         {
         }
 

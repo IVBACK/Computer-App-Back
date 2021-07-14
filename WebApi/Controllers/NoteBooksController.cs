@@ -10,9 +10,9 @@ namespace ComputerAPP.Controllers
     [Route("api/[controller]")]
     public class NoteBooksController : ControllerBase
     {
-        private readonly DataBaseContext db;
+        private readonly NoteBookDbContext db;
 
-        public NoteBooksController(DataBaseContext db)
+        public NoteBooksController(NoteBookDbContext db)
         {
             this.db = db;
         }

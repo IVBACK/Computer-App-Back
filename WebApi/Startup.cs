@@ -10,13 +10,7 @@ using Microsoft.Extensions.Hosting;
 namespace ComputerAPP
 {
     public class Startup
-    {
-        private readonly IWebHostEnvironment _env;
-
-        public Startup(IWebHostEnvironment env)
-        {
-            this._env = env;
-        }
+    {     
 
         public Startup(IConfiguration configuration)
         {
@@ -27,25 +21,15 @@ namespace ComputerAPP
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        { 
-            services.AddDbContext<DataBaseContext>(options =>
-            {
-                options.UseInMemoryDatabase("DataBase");
-            });
+        {
+            services.AddDbContext<NoteBookDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Connection")));
             services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataBaseContext context)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, NoteBookDbContext context)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-
-                //Create the in-memory database for dev environment
-                context.Database.EnsureDeleted();
-                context.Database.EnsureCreated();
-            }
+            
 
             app.UseRouting();
 
