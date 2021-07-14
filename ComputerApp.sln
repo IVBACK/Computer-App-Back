@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComputerAPP.Api", "WebApi\ComputerAPP.Api.csproj", "{79EF1ED5-682A-42C8-8149-6D72C5485FCC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComputerAPP.API", "WebApi\ComputerAPP.API.csproj", "{79EF1ED5-682A-42C8-8149-6D72C5485FCC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComputerAPP.CORE", "ComputerAPP.CORE\ComputerAPP.CORE.csproj", "{205E9833-8087-41F1-9297-71CA033DF008}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComputerAPP.DATA", "ComputerAPP.DATA\ComputerAPP.DATA.csproj", "{BD490570-9C9D-4773-BF4C-03979D3706E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComputerAPP.SERVICE", "ComputerAPP.SERVICE\ComputerAPP.SERVICE.csproj", "{B55EE3D0-427F-4A5F-A4CC-864B7ED2BB83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComputerAPP.SERVICE", "ComputerAPP.SERVICE\ComputerAPP.SERVICE.csproj", "{B55EE3D0-427F-4A5F-A4CC-864B7ED2BB83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

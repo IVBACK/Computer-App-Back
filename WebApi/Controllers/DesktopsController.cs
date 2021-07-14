@@ -2,8 +2,6 @@
 using ComputerAPP.DATA.DbContexts;
 using ComputerAPP.SERVICE.ValidationServices;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace ComputerAPP.Api.Controllers
 {
@@ -11,41 +9,41 @@ namespace ComputerAPP.Api.Controllers
     [Route("api/[controller]")]
     public class DesktopsController : ControllerBase
     {
-        private readonly DesktopService validation;
+        private readonly DesktopService desktopService;
 
         public DesktopsController(ComputerAppDbContext db)
         {
-            validation = new DesktopService(db);
+            desktopService = new DesktopService(db);
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return validation.GetDesktops();
+            return desktopService.GetDesktops();
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            return validation.GetDesktopById(id);
+            return desktopService.GetDesktopById(id);
         }
 
         [HttpPost]
         public IActionResult Post([FromBody] Desktop desktop)
         {
-            return validation.PostDesktop(desktop);
+            return desktopService.PostDesktop(desktop);
         }
 
         [HttpPut("{id}")]
         public IActionResult Put(int id, Desktop desktop)
         {
-            return validation.PutDesktop(id, desktop);
+            return desktopService.PutDesktop(id, desktop);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            return validation.DeleteDesktop(id);
+            return desktopService.DeleteDesktop(id);
         }
     }
 }

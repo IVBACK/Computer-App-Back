@@ -2,8 +2,7 @@
 using ComputerAPP.DATA.DbContexts;
 using ComputerAPP.SERVICE;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
+
 
 namespace ComputerAPP.Controllers
 {
@@ -11,41 +10,41 @@ namespace ComputerAPP.Controllers
     [Route("api/[controller]")]
     public class NoteBooksController : ControllerBase
     {
-        private readonly NoteBookService validation;
+        private readonly NoteBookService notebookService;
 
         public NoteBooksController(ComputerAppDbContext db)
         {
-            validation = new NoteBookService(db);
+            notebookService = new NoteBookService(db);
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return validation.GetNoteBooks();          
+            return notebookService.GetNoteBooks();          
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            return validation.GetNoteBookById(id);
+            return notebookService.GetNoteBookById(id);
         }
 
         [HttpPost]
         public IActionResult Post([FromBody]NoteBook noteBook)
         {
-            return validation.PostNoteBook(noteBook);
+            return notebookService.PostNoteBook(noteBook);
         }
 
         [HttpPut("{id}")]
         public IActionResult Put(int id, NoteBook noteBook)
         {
-            return validation.PutNoteBook(id, noteBook);
+            return notebookService.PutNoteBook(id, noteBook);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            return validation.DeleteNoteBook(id);
+            return notebookService.DeleteNoteBook(id);
         }
     }
 }
