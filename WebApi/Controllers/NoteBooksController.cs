@@ -1,5 +1,8 @@
 ﻿using ComputerAPP.CORE.Models;
+using ComputerAPP.DATA;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace ComputerAPP.Controllers
 {
@@ -7,34 +10,72 @@ namespace ComputerAPP.Controllers
     [Route("api/[controller]")]
     public class NoteBooksController : ControllerBase
     {
+        private readonly DataBaseContext db;
+
+        public NoteBooksController(DataBaseContext db)
+        {
+            this.db = db;
+        }
+
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok("Reading NoteBooks");
+            return Ok(db.NoteBooks.ToList());
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            return Ok($"Reading NoteBook #{id}");
+            var noteBook = db.NoteBooks.Find(id);
+            if (noteBook == null)
+                return NotFound();
+
+            return Ok(noteBook);
         }
 
         [HttpPost]
         public IActionResult Post([FromBody]NoteBook noteBook)
         {
-            return Ok(noteBook);
+            db.NoteBooks.Add(noteBook);
+            db.SaveChanges();
+
+            return CreatedAtAction(nameof(GetById),
+                new { id = noteBook.NoteBookId },
+                noteBook);
         }
 
-        [HttpPut]
-        public IActionResult Put([FromBody] NoteBook noteBook)
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, NoteBook noteBook)
         {
-            return Ok(noteBook);
+            if (id != noteBook.NoteBookId) return BadRequest();
+
+            db.Entry(noteBook).State = EntityState.Modified;
+            
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (System.Exception)
+            {
+                if (db.NoteBooks.Find(id) == null)
+                    return NotFound();
+                throw;
+            }
+            
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            return Ok($"Deleting NoteBook #{id}");
+            var noteBook = db.NoteBooks.Find(id);
+            if (noteBook == null)
+                return NotFound();
+
+            db.NoteBooks.Remove(noteBook);
+            db.SaveChanges();
+
+            return Ok(noteBook);
         }
     }
 }
