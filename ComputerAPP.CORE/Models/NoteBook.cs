@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ComputerAPP.CORE.Models
 {
-    [NoteBook_EnsureAllFieldsAreFullOnCreationAttribute]
+    [NoteBook_EnsureHasStorageOnCreation]
     public class NoteBook
     {
         [Key]     
@@ -29,22 +29,32 @@ namespace ComputerAPP.CORE.Models
         [Required]
         [StringLength(50)]
         public string Ram { get; set; }
+        
+        [StringLength(50)]
+        public string SsdCap { get; set; }
+
+        [StringLength(50)]
+        public string HddCap { get; set; }
 
         [Required]
         [StringLength(50)]
         public string Battery { get; set; }
 
-        public bool ValidateAllFieldsFull()
+        public bool CheckStorage()
         {
-            if( !string.IsNullOrWhiteSpace(Model) &&
-                !string.IsNullOrWhiteSpace(Cpu) &&
-                !string.IsNullOrWhiteSpace(Gpu) &&
-                !string.IsNullOrWhiteSpace(Ram) &&
-                !string.IsNullOrWhiteSpace(Battery))
+            if(string.IsNullOrWhiteSpace(SsdCap))
             {
+                if(string.IsNullOrWhiteSpace(HddCap))
+                    return false;
                 return true;
             }
-            return false;          
+            else if(string.IsNullOrWhiteSpace(HddCap))
+            {
+                if (string.IsNullOrWhiteSpace(SsdCap))
+                    return false;
+                return true;
+            }
+            return true;
         }
     }
 }

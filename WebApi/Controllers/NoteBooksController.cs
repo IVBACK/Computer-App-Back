@@ -1,5 +1,5 @@
 ﻿using ComputerAPP.CORE.Models;
-using ComputerAPP.DATA;
+using ComputerAPP.DATA.DbContexts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -10,9 +10,9 @@ namespace ComputerAPP.Controllers
     [Route("api/[controller]")]
     public class NoteBooksController : ControllerBase
     {
-        private readonly NoteBookDbContext db;
+        private readonly ComputerAppDbContext db;
 
-        public NoteBooksController(NoteBookDbContext db)
+        public NoteBooksController(ComputerAppDbContext db)
         {
             this.db = db;
         }
