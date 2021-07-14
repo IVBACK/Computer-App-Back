@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ComputerAPP.DATA.Migrations
 {
-    [DbContext(typeof(ComputerAppDbContext))]
+    [DbContext(typeof(ComputerAppDBContext))]
     partial class ComputerAppDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

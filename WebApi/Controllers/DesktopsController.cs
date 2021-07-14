@@ -9,41 +9,65 @@ namespace ComputerAPP.Api.Controllers
     [Route("api/[controller]")]
     public class DesktopsController : ControllerBase
     {
-        private readonly DesktopService desktopService;
+        private readonly SqlDesktopRepo sqlDesktopRepo;
 
-        public DesktopsController(ComputerAppDbContext db)
+        public DesktopsController(ComputerAppDBContext db)
         {
-            desktopService = new DesktopService(db);
+            sqlDesktopRepo = new SqlDesktopRepo(db);
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return desktopService.GetDesktops();
+            return Ok(sqlDesktopRepo.GetAllDesktops());
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            return desktopService.GetDesktopById(id);
+            return Ok(sqlDesktopRepo.GetDesktopById(id));
         }
 
         [HttpPost]
         public IActionResult Post([FromBody] Desktop desktop)
         {
-            return desktopService.PostDesktop(desktop);
+            sqlDesktopRepo.CreateDesktop(desktop);
+            sqlDesktopRepo.SaveChanges();
+
+            return Ok(desktop);
         }
 
         [HttpPut("{id}")]
         public IActionResult Put(int id, Desktop desktop)
         {
-            return desktopService.PutDesktop(id, desktop);
+            if (id != desktop.DesktopId)
+                return BadRequest();
+
+            try
+            {
+                sqlDesktopRepo.UpdateDesktop(id, desktop);
+            }
+            catch (System.Exception)
+            {
+                if (sqlDesktopRepo.GetDesktopById(id) == null)
+                    return NotFound();
+                throw;
+            }
+
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            return desktopService.DeleteDesktop(id);
+            var desktop = sqlDesktopRepo.GetDesktopById(id);
+            if (desktop == null)
+                return NotFound();
+
+            sqlDesktopRepo.DeleteDesktop(id);
+            sqlDesktopRepo.SaveChanges();
+
+            return Ok();
         }
     }
 }

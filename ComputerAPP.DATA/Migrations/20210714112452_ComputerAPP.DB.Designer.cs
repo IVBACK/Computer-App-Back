@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ComputerAPP.DATA.Migrations
 {
-    [DbContext(typeof(ComputerAppDbContext))]
+    [DbContext(typeof(ComputerAppDBContext))]
     [Migration("20210714112452_ComputerAPP.DB")]
     partial class ComputerAPPDB
     {

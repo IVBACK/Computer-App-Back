@@ -10,41 +10,65 @@ namespace ComputerAPP.Controllers
     [Route("api/[controller]")]
     public class NoteBooksController : ControllerBase
     {
-        private readonly NoteBookService notebookService;
+        private readonly SqlNoteBookRepo sqlNoteBookRepo;
 
-        public NoteBooksController(ComputerAppDbContext db)
+        public NoteBooksController(ComputerAppDBContext db)
         {
-            notebookService = new NoteBookService(db);
+            sqlNoteBookRepo = new SqlNoteBookRepo(db);
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return notebookService.GetNoteBooks();          
+            return Ok(sqlNoteBookRepo.GetAllNoteBooks());
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            return notebookService.GetNoteBookById(id);
+            return Ok(sqlNoteBookRepo.GetNoteBookById(id));
         }
 
         [HttpPost]
         public IActionResult Post([FromBody]NoteBook noteBook)
         {
-            return notebookService.PostNoteBook(noteBook);
+            sqlNoteBookRepo.CreateNoteBook(noteBook);
+            sqlNoteBookRepo.SaveChanges();
+
+            return Ok(noteBook);
         }
 
         [HttpPut("{id}")]
         public IActionResult Put(int id, NoteBook noteBook)
         {
-            return notebookService.PutNoteBook(id, noteBook);
+            if (id != noteBook.NoteBookId)
+                return BadRequest();
+
+            try
+            {
+                sqlNoteBookRepo.UpdateNoteBook(id, noteBook);
+            }
+            catch (System.Exception)
+            {
+                if (sqlNoteBookRepo.GetNoteBookById(id) == null)
+                    return NotFound();
+                throw;
+            }
+
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            return notebookService.DeleteNoteBook(id);
+            var noteBook = sqlNoteBookRepo.GetNoteBookById(id);
+            if (noteBook == null)
+                return NotFound();
+
+            sqlNoteBookRepo.DeleteNoteBook(id);
+            sqlNoteBookRepo.SaveChanges();
+
+            return Ok();
         }
     }
 }

@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ComputerAPP.DATA.DbContexts
 {
-    public class ComputerAppDbContext : DbContext
+    public class ComputerAppDBContext : DbContext
     {
-        public ComputerAppDbContext(DbContextOptions<ComputerAppDbContext> options) : base(options)
+        public ComputerAppDBContext(DbContextOptions<ComputerAppDBContext> options) : base(options)
         {
         }
 
