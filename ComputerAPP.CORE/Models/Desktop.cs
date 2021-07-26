@@ -1,9 +1,7 @@
-﻿using ComputerAPP.CORE.ValidationAttributes;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ComputerAPP.CORE.Models
-{
-    [Desktop_EnsureHasStorageOnCreation]
+{  
     public class Desktop
     {
         [Key]
@@ -34,18 +32,5 @@ namespace ComputerAPP.CORE.Models
         [Required]
         [StringLength(50)]
         public string Case { get; set; }
-
-        public bool ValidateAllFieldsFull()
-        {
-            if (!string.IsNullOrWhiteSpace(Psu) &&
-                !string.IsNullOrWhiteSpace(Cpu) &&
-                !string.IsNullOrWhiteSpace(Gpu) &&
-                !string.IsNullOrWhiteSpace(Ram) &&
-                !string.IsNullOrWhiteSpace(Case))
-            {
-                return true;
-            }
-            return false;
-        }
     }
 }
