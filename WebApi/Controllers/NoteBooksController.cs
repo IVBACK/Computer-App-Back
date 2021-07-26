@@ -20,22 +20,29 @@ namespace ComputerAPP.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(sqlNoteBookRepo.GetAllNoteBooks());
+            return Ok(sqlNoteBookRepo.GetAllProducts());
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            return Ok(sqlNoteBookRepo.GetNoteBookById(id));
+            return Ok(sqlNoteBookRepo.GetProductById(id));
         }
 
         [HttpPost]
         public IActionResult Post([FromBody]NoteBook noteBook)
         {
-            sqlNoteBookRepo.CreateNoteBook(noteBook);
-            sqlNoteBookRepo.SaveChanges();
+            if(noteBook.NoteBookId != null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                sqlNoteBookRepo.CreateProduct(noteBook);
+                sqlNoteBookRepo.SaveChanges();
 
-            return Ok(noteBook);
+                return Ok(noteBook);
+            }         
         }
 
         [HttpPut("{id}")]
@@ -46,11 +53,11 @@ namespace ComputerAPP.Controllers
 
             try
             {
-                sqlNoteBookRepo.UpdateNoteBook(id, noteBook);
+                sqlNoteBookRepo.UpdateProduct(id, noteBook);
             }
             catch (System.Exception)
             {
-                if (sqlNoteBookRepo.GetNoteBookById(id) == null)
+                if (sqlNoteBookRepo.GetProductById(id) == null)
                     return NotFound();
                 throw;
             }
@@ -61,11 +68,11 @@ namespace ComputerAPP.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var noteBook = sqlNoteBookRepo.GetNoteBookById(id);
+            var noteBook = sqlNoteBookRepo.GetProductById(id);
             if (noteBook == null)
                 return NotFound();
 
-            sqlNoteBookRepo.DeleteNoteBook(id);
+            sqlNoteBookRepo.DeleteProduct(id);
             sqlNoteBookRepo.SaveChanges();
 
             return Ok();

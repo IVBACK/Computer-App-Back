@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace ComputerAPP.SERVICE
 {
-    public class SqlNoteBookRepo : INoteBookRepo
+    public class SqlNoteBookRepo : IProductRepo
     {
         private readonly ComputerAppDBContext db_Context;
 
@@ -17,12 +17,12 @@ namespace ComputerAPP.SERVICE
             this.db_Context = db;
         }
 
-        public void CreateNoteBook(NoteBook noteBook)
+        public void CreateProduct(IProduct noteBook)
         {
-            db_Context.NoteBooks.Add(noteBook);
+            db_Context.NoteBooks.Add((NoteBook)noteBook);
         }
 
-        public void DeleteNoteBook(int id)
+        public void DeleteProduct(int id)
         {
             var noteBook = db_Context.NoteBooks.Find(id);
             if (noteBook == null)
@@ -32,12 +32,12 @@ namespace ComputerAPP.SERVICE
             db_Context.NoteBooks.Remove(noteBook);
         }
 
-        public IEnumerable<NoteBook> GetAllNoteBooks()
+        public IEnumerable<IProduct> GetAllProducts()
         {
             return db_Context.NoteBooks.ToList();
         }
 
-        public NoteBook GetNoteBookById(int id)
+        public IProduct GetProductById(int id)
         {
             return db_Context.NoteBooks.FirstOrDefault(p => p.NoteBookId == id);
         }
@@ -47,7 +47,7 @@ namespace ComputerAPP.SERVICE
             db_Context.SaveChanges();
         }
 
-        public void UpdateNoteBook(int id, NoteBook noteBook)
+        public void UpdateProduct(int id, IProduct noteBook)
         {
             db_Context.Entry(noteBook).State = EntityState.Modified;
             SaveChanges();

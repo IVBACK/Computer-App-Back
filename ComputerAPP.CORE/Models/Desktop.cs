@@ -2,10 +2,10 @@
 
 namespace ComputerAPP.CORE.Models
 {  
-    public class Desktop
+    public class Desktop : IProduct
     {
         [Key]
-        public int DesktopId { get; set; }
+        public int? DesktopId { get; set; }
 
         [Required]
         [StringLength(50)]

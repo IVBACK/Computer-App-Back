@@ -2,10 +2,10 @@
 
 namespace ComputerAPP.CORE.Models
 {
-    public class NoteBook
+    public class NoteBook : IProduct
     {
         [Key]     
-        public int NoteBookId { get; set; }
+        public int? NoteBookId { get; set; }
 
         [Required]
         [StringLength(50)]

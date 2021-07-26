@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace ComputerAPP.SERVICE.ValidationServices
 {
-    public class SqlDesktopRepo : IDesktopRepo
+    public class SqlDesktopRepo : IProductRepo
     {
         private readonly ComputerAppDBContext db_Context;
 
@@ -16,12 +16,12 @@ namespace ComputerAPP.SERVICE.ValidationServices
             this.db_Context = db;
         }
 
-        public void CreateDesktop(Desktop desktop)
+        public void CreateProduct(IProduct desktop)
         {
-            db_Context.Desktops.Add(desktop);
+            db_Context.Desktops.Add((Desktop)desktop);
         }
 
-        public void DeleteDesktop(int id)
+        public void DeleteProduct(int id)
         {
             var desktop = db_Context.Desktops.Find(id);
             if (desktop == null)
@@ -31,12 +31,12 @@ namespace ComputerAPP.SERVICE.ValidationServices
             db_Context.Desktops.Remove(desktop);
         }
 
-        public Desktop GetDesktopById(int id)
+        public IProduct GetProductById(int id)
         {
             return db_Context.Desktops.FirstOrDefault(p => p.DesktopId == id);
         }
 
-        public IEnumerable<Desktop> GetAllDesktops()
+        public IEnumerable<IProduct> GetAllProducts()
         {
             return db_Context.Desktops.ToList();
         }
@@ -46,7 +46,7 @@ namespace ComputerAPP.SERVICE.ValidationServices
             db_Context.SaveChanges();
         }
 
-        public void UpdateDesktop(int id, Desktop desktop)
+        public void UpdateProduct(int id, IProduct desktop)
         {
             db_Context.Entry(desktop).State = EntityState.Modified;
             SaveChanges();

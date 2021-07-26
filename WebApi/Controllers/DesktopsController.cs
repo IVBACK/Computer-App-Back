@@ -19,22 +19,29 @@ namespace ComputerAPP.Api.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(sqlDesktopRepo.GetAllDesktops());
+            return Ok(sqlDesktopRepo.GetAllProducts());
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            return Ok(sqlDesktopRepo.GetDesktopById(id));
+            return Ok(sqlDesktopRepo.GetProductById(id));
         }
 
         [HttpPost]
         public IActionResult Post([FromBody] Desktop desktop)
         {
-            sqlDesktopRepo.CreateDesktop(desktop);
-            sqlDesktopRepo.SaveChanges();
+            if(desktop.DesktopId != null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                sqlDesktopRepo.CreateProduct(desktop);
+                sqlDesktopRepo.SaveChanges();
 
-            return Ok(desktop);
+                return Ok(desktop);
+            }           
         }
 
         [HttpPut("{id}")]
@@ -45,11 +52,11 @@ namespace ComputerAPP.Api.Controllers
 
             try
             {
-                sqlDesktopRepo.UpdateDesktop(id, desktop);
+                sqlDesktopRepo.UpdateProduct(id, desktop);
             }
             catch (System.Exception)
             {
-                if (sqlDesktopRepo.GetDesktopById(id) == null)
+                if (sqlDesktopRepo.GetProductById(id) == null)
                     return NotFound();
                 throw;
             }
@@ -60,11 +67,11 @@ namespace ComputerAPP.Api.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var desktop = sqlDesktopRepo.GetDesktopById(id);
+            var desktop = sqlDesktopRepo.GetProductById(id);
             if (desktop == null)
                 return NotFound();
 
-            sqlDesktopRepo.DeleteDesktop(id);
+            sqlDesktopRepo.DeleteProduct(id);
             sqlDesktopRepo.SaveChanges();
 
             return Ok();
