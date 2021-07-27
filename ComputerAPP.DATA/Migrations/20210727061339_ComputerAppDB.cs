@@ -2,7 +2,7 @@
 
 namespace ComputerAPP.DATA.Migrations
 {
-    public partial class ComputerAPPDB : Migration
+    public partial class ComputerAppDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -44,6 +44,21 @@ namespace ComputerAPP.DATA.Migrations
                 {
                     table.PrimaryKey("PK_NoteBooks", x => x.NoteBookId);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Mail = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.UserId);
+                });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -53,6 +68,9 @@ namespace ComputerAPP.DATA.Migrations
 
             migrationBuilder.DropTable(
                 name: "NoteBooks");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

@@ -8,6 +8,7 @@ namespace ComputerAPP.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    
     public class NoteBooksController : ControllerBase
     {
         private readonly SqlNoteBookRepo sqlNoteBookRepo;
@@ -30,30 +31,30 @@ namespace ComputerAPP.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]NoteBook noteBook)
+        public IActionResult Post([FromBody]NoteBook notebook)
         {
-            if(noteBook.NoteBookId != null)
+            if(notebook.NoteBookId != null)
             {
                 return BadRequest();
             }
             else
             {
-                sqlNoteBookRepo.CreateProduct(noteBook);
+                sqlNoteBookRepo.CreateProduct(notebook);
                 sqlNoteBookRepo.SaveChanges();
 
-                return Ok(noteBook);
+                return Ok(notebook);
             }         
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, NoteBook noteBook)
+        public IActionResult Put(int id, NoteBook notebook)
         {
-            if (id != noteBook.NoteBookId)
+            if (id != notebook.NoteBookId)
                 return BadRequest();
 
             try
             {
-                sqlNoteBookRepo.UpdateProduct(id, noteBook);
+                sqlNoteBookRepo.UpdateProduct(id, notebook);
             }
             catch (System.Exception)
             {
@@ -68,8 +69,8 @@ namespace ComputerAPP.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var noteBook = sqlNoteBookRepo.GetProductById(id);
-            if (noteBook == null)
+            var notebook = sqlNoteBookRepo.GetProductById(id);
+            if (notebook == null)
                 return NotFound();
 
             sqlNoteBookRepo.DeleteProduct(id);

@@ -17,19 +17,19 @@ namespace ComputerAPP.SERVICE
             this.db_Context = db;
         }
 
-        public void CreateProduct(IProduct noteBook)
+        public void CreateProduct(IProduct notebook)
         {
-            db_Context.NoteBooks.Add((NoteBook)noteBook);
+            db_Context.NoteBooks.Add((NoteBook)notebook);
         }
 
         public void DeleteProduct(int id)
         {
-            var noteBook = db_Context.NoteBooks.Find(id);
-            if (noteBook == null)
+            var notebook = db_Context.NoteBooks.Find(id);
+            if (notebook == null)
             {
-                throw new ArgumentNullException(nameof(noteBook));
+                throw new ArgumentNullException(nameof(notebook));
             }
-            db_Context.NoteBooks.Remove(noteBook);
+            db_Context.NoteBooks.Remove(notebook);
         }
 
         public IEnumerable<IProduct> GetAllProducts()
@@ -47,9 +47,9 @@ namespace ComputerAPP.SERVICE
             db_Context.SaveChanges();
         }
 
-        public void UpdateProduct(int id, IProduct noteBook)
+        public void UpdateProduct(int id, IProduct notebook)
         {
-            db_Context.Entry(noteBook).State = EntityState.Modified;
+            db_Context.Entry(notebook).State = EntityState.Modified;
             SaveChanges();
         }
     }

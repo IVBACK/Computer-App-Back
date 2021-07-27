@@ -12,5 +12,7 @@ namespace ComputerAPP.DATA.DbContexts
         public DbSet<Desktop> Desktops { get; set; }
 
         public DbSet<NoteBook> NoteBooks { get; set; }
+
+        public DbSet<User> Users { get; set; }
     }
 }
