@@ -2,7 +2,7 @@
 
 namespace ComputerAPP.CORE.Models
 {  
-    public class Desktop : Product
+    public class Desktop
     {
         [Key]
         public int? DesktopId { get; set; }

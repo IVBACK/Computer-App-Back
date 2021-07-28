@@ -70,11 +70,6 @@ namespace ComputerAPP.SERVICE.SqlRepos
             }           
         }
 
-        public void SaveChanges()
-        {
-            db_Context.SaveChanges();
-        }
-
         public bool UpdateProduct(TEntity entity)
         {
             try
@@ -88,6 +83,11 @@ namespace ComputerAPP.SERVICE.SqlRepos
                 return false;
                 throw new ArgumentNullException(nameof(entity));
             }
+        }
+
+        public void SaveChanges()
+        {
+            db_Context.SaveChanges();
         }
     }
 }

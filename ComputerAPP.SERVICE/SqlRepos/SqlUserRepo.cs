@@ -72,11 +72,6 @@ namespace ComputerAPP.SERVICE.SqlRepos
             }           
         }
 
-        public void SaveChanges()
-        {
-            db_Context.SaveChanges();
-        }
-
         public bool UpdateUser(User user)
         {
             try
@@ -90,6 +85,11 @@ namespace ComputerAPP.SERVICE.SqlRepos
                 return false;
                 throw new ArgumentNullException(nameof(user));
             }
+        }
+
+        public void SaveChanges()
+        {
+            db_Context.SaveChanges();
         }
     }
 }

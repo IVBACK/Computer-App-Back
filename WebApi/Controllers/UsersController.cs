@@ -56,7 +56,6 @@ namespace ComputerAPP.API.Controllers
             return NotFound();
         }
 
-
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
