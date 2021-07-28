@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ComputerAPP.DATA.Migrations
 {
     [DbContext(typeof(ComputerAppDBContext))]
-    [Migration("20210727061339_ComputerAppDB")]
+    [Migration("20210727162436_ComputerAppDB")]
     partial class ComputerAppDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -10,18 +10,18 @@ namespace ComputerAPP.SERVICE.Validations
             EmailAddressAttribute e = new EmailAddressAttribute();
             if (e.IsValid(email))
                 return true;
-            else
-                return false;
+           
+            return false;
         }
 
         public bool IsNameValid(string name)
         {
-            Regex regex = new Regex("^[A-Z][a-zA-Z]*$");
+            Regex regex = new Regex(@"^[a-zA-Z\s]+$");
 
             if (regex.IsMatch(name))
                 return true;
-            else
-                return false;          
+            
+            return false;          
         }
     }
 }
