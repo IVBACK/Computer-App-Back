@@ -2,6 +2,7 @@
 using ComputerAPP.DATA.DbContexts;
 using ComputerAPP.SERVICE.SqlRepos;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace ComputerAPP.API.Controllers
 {
@@ -20,63 +21,49 @@ namespace ComputerAPP.API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(sqlUserRepo.GetAllUsers());
+            IEnumerable<User> users = sqlUserRepo.GetAllUsers();
+            if (users != null)
+                return Ok(users);
+
+            return NotFound();
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            return Ok(sqlUserRepo.GetUserById(id));
+            User user = sqlUserRepo.GetUserById(id);
+            if (user != null)
+                return Ok(user);
+            
+            return NotFound();
         }
 
         [HttpPost]
         public IActionResult Post([FromBody] User user)
         {
-            if (user.UserId != null)
-            {
-                return BadRequest();
-            }
-            else
-            {
-                sqlUserRepo.CreateUser(user);
-                sqlUserRepo.SaveChanges();
-
+            if(sqlUserRepo.CreateUser(user))
                 return Ok(user);
-            }
+
+            return BadRequest("Invalid Name Or Email!");
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, User user)
+        public IActionResult Put(User user)
         {
-            if (id != user.UserId)
-                return BadRequest();
+            if(sqlUserRepo.UpdateUser(user))
+                return Ok(user);
 
-            try
-            {
-                sqlUserRepo.UpdateUser(id, user);
-            }
-            catch (System.Exception)
-            {
-                if (sqlUserRepo.GetUserById(id) == null)
-                    return NotFound();
-                throw;
-            }
-
-            return NoContent();
+            return NotFound();
         }
 
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var user = sqlUserRepo.GetUserById(id);
-            if (user == null)
-                return NotFound();
+            if(sqlUserRepo.DeleteUser(id))
+                return Ok();
 
-            sqlUserRepo.DeleteUser(id);
-            sqlUserRepo.SaveChanges();
-
-            return Ok();
+            return NotFound();
         }
     }
 }

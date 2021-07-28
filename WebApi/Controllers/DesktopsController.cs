@@ -1,7 +1,8 @@
 ﻿using ComputerAPP.CORE.Models;
 using ComputerAPP.DATA.DbContexts;
-using ComputerAPP.SERVICE.ValidationServices;
+using ComputerAPP.SERVICE.SqlRepos;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace ComputerAPP.Api.Controllers
 {
@@ -9,72 +10,58 @@ namespace ComputerAPP.Api.Controllers
     [Route("api/[controller]")]
     public class DesktopsController : ControllerBase
     {
-        private readonly SqlDesktopRepo sqlDesktopRepo;
+        private readonly SqlProductRepo<Desktop> sqlDesktopRepo;
 
         public DesktopsController(ComputerAppDBContext db)
         {
-            sqlDesktopRepo = new SqlDesktopRepo(db);
+            sqlDesktopRepo = new SqlProductRepo<Desktop>(db);
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(sqlDesktopRepo.GetAllProducts());
+            IEnumerable<Desktop> desktops = sqlDesktopRepo.GetAllProducts();
+            if (desktops != null)
+                return Ok(desktops);
+
+            return NotFound();
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            return Ok(sqlDesktopRepo.GetProductById(id));
+            Desktop desktop = sqlDesktopRepo.GetProductById(id);
+            if (desktop != null)
+                return Ok(desktop);
+
+            return NotFound();            
         }
 
         [HttpPost]
         public IActionResult Post([FromBody] Desktop desktop)
         {
-            if(desktop.DesktopId != null)
-            {
-                return BadRequest();
-            }
-            else
-            {
-                sqlDesktopRepo.CreateProduct(desktop);
-                sqlDesktopRepo.SaveChanges();
-
+            if (sqlDesktopRepo.CreateProduct(desktop))
                 return Ok(desktop);
-            }           
+
+            return BadRequest();
         }
 
         [HttpPut("{id}")]
         public IActionResult Put(int id, Desktop desktop)
         {
-            if (id != desktop.DesktopId)
-                return BadRequest();
+            if (sqlDesktopRepo.UpdateProduct(desktop))
+                return Ok(desktop);
 
-            try
-            {
-                sqlDesktopRepo.UpdateProduct(id, desktop);
-            }
-            catch (System.Exception)
-            {
-                if (sqlDesktopRepo.GetProductById(id) == null)
-                    return NotFound();
-                throw;
-            }
-
-            return NoContent();
+            return NotFound();
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var desktop = sqlDesktopRepo.GetProductById(id);
-            if (desktop == null)
-                return NotFound();
+            if (sqlDesktopRepo.DeleteProduct(id))
+                return Ok();
 
-            sqlDesktopRepo.DeleteProduct(id);
-            sqlDesktopRepo.SaveChanges();
-
-            return Ok();
+            return NotFound();
         }
     }
 }

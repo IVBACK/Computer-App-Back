@@ -1,15 +1,14 @@
-﻿using ComputerAPP.CORE.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace ComputerAPP.SERVICE
 {
-    interface IProductRepo
+    interface IProductRepo<TEntity> where TEntity : class
     {
         void SaveChanges();
-        IEnumerable<IProduct> GetAllProducts();
-        IProduct GetProductById(int id);
-        void CreateProduct(IProduct product);
-        void UpdateProduct(int id, IProduct product);
-        void DeleteProduct(int id);
+        IEnumerable<TEntity> GetAllProducts();
+        TEntity GetProductById(int id);
+        bool CreateProduct(TEntity entity);
+        bool UpdateProduct(TEntity entity);
+        bool DeleteProduct(int id);
     }
 }

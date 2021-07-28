@@ -1,7 +1,4 @@
-﻿using ComputerAPP.CORE.Models;
-using ComputerAPP.DATA.DbContexts;
-using ComputerAPP.SERVICE.IRepos;
-using ComputerAPP.SERVICE.Validations;
+﻿using ComputerAPP.DATA.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,35 +6,35 @@ using System.Linq;
 
 namespace ComputerAPP.SERVICE.SqlRepos
 {
-    public class SqlUserRepo : IUserRepo
+    public class SqlProductRepo<TEntity> : IProductRepo<TEntity> where TEntity : class
     {
         private readonly ComputerAppDBContext db_Context;
 
-        private UserValidation userValidation = new UserValidation();
-
-        public SqlUserRepo(ComputerAppDBContext db)
+        public SqlProductRepo(ComputerAppDBContext db)
         {
             this.db_Context = db;
         }
-        
-        public bool CreateUser(User user)
-        {
-            if(userValidation.IsNameValid(user.Name) && userValidation.IsEmailValid(user.Mail))
-            {
-                db_Context.Users.Add(user);
-                SaveChanges();
-                return true;
-            }
-            return false;           
-        }
 
-        public bool DeleteUser(int id)
+        public bool CreateProduct(TEntity entity)
         {
             try
             {
-                var user = db_Context.Users.Find(id);
-                db_Context.Users.Remove(user);
-                SaveChanges();
+                db_Context.Set<TEntity>().Add(entity);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+                throw;               
+            }           
+        }
+
+        public bool DeleteProduct(int id)
+        {
+            try
+            {
+                TEntity entity = db_Context.Set<TEntity>().Find(id);
+                db_Context.Set<TEntity>().Remove(entity);
                 return true;
             }
             catch (Exception)
@@ -47,23 +44,24 @@ namespace ComputerAPP.SERVICE.SqlRepos
             }          
         }
 
-        public IEnumerable<User> GetAllUsers()
+        public IEnumerable<TEntity> GetAllProducts()
         {
             try
             {
-                return db_Context.Users.ToList();
+                return db_Context.Set<TEntity>().ToList();
             }
             catch (Exception)
             {
+                return null;
                 throw;
             }          
         }
 
-        public User GetUserById(int id)
+        public TEntity GetProductById(int id)
         {
             try
             {
-                return db_Context.Users.FirstOrDefault(p => p.UserId == id);
+                return db_Context.Set<TEntity>().Find(id);
             }
             catch (Exception)
             {
@@ -77,18 +75,18 @@ namespace ComputerAPP.SERVICE.SqlRepos
             db_Context.SaveChanges();
         }
 
-        public bool UpdateUser(User user)
+        public bool UpdateProduct(TEntity entity)
         {
             try
             {
-                db_Context.Entry(user).State = EntityState.Modified;
+                db_Context.Entry(entity).State = EntityState.Modified;
                 SaveChanges();
                 return true;
             }
             catch (Exception)
             {
                 return false;
-                throw new ArgumentNullException(nameof(user));
+                throw new ArgumentNullException(nameof(entity));
             }
         }
     }

@@ -8,8 +8,8 @@ namespace ComputerAPP.SERVICE.IRepos
         void SaveChanges();
         IEnumerable<User> GetAllUsers();
         User GetUserById(int id);
-        void CreateUser(User user);
-        void UpdateUser(int id, User user);
-        void DeleteUser(int id);
+        bool CreateUser(User user);
+        bool UpdateUser(User user);
+        bool DeleteUser(int id);
     }
 }
