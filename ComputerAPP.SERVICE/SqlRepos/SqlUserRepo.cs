@@ -59,6 +59,24 @@ namespace ComputerAPP.SERVICE.SqlRepos
             }          
         }
 
+        public UserLoginResponse GetUserByMail(UserLoginRequest userLoginRequest)
+        {
+            try
+            {
+                User user = db_Context.Users.FirstOrDefault(p => p.Mail == userLoginRequest.Mail);
+                UserLoginResponse userLoginResponse = new UserLoginResponse();
+                userLoginResponse.Mail = user.Mail;
+                userLoginResponse.Name = user.Name;
+                userLoginResponse.UserId = Convert.ToString(user.UserId);
+                return userLoginResponse;
+            }
+            catch (Exception)
+            {
+                return null;
+                throw;
+            }
+        }
+
         public User GetUserById(int id)
         {
             try

@@ -38,6 +38,16 @@ namespace ComputerAPP.API.Controllers
             return NotFound();
         }
 
+        [HttpPost("{login}")]
+        public IActionResult Login([FromBody] UserLoginRequest userLoginRequest)
+        {
+            UserLoginResponse userLoginResponse = sqlUserRepo.GetUserByMail(userLoginRequest);
+            if (userLoginResponse != null)
+                return Ok(userLoginResponse);
+
+            return NotFound();
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody] User user)
         {

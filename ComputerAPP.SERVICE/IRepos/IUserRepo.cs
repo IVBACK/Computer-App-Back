@@ -9,6 +9,7 @@ namespace ComputerAPP.SERVICE.IRepos
         IEnumerable<User> GetAllUsers();
         User GetUserById(int id);
         bool CreateUser(User user);
+        UserLoginResponse GetUserByMail(UserLoginRequest userLoginRequest);
         bool UpdateUser(User user);
         bool DeleteUser(int id);
     }
