@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace ComputerAPP.SERVICE.Validations
 {
-    public class UserValidation
+    public class UserRegisterValidation
     {
         public bool IsEmailValid(string email)
         {

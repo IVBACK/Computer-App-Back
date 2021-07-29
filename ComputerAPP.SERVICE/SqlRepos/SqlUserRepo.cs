@@ -13,7 +13,7 @@ namespace ComputerAPP.SERVICE.SqlRepos
     {
         private readonly ComputerAppDBContext db_Context;
 
-        private UserValidation userValidation = new UserValidation();
+        private UserRegisterValidation userValidation = new UserRegisterValidation();
 
         public SqlUserRepo(ComputerAppDBContext db)
         {
@@ -49,45 +49,30 @@ namespace ComputerAPP.SERVICE.SqlRepos
 
         public IEnumerable<User> GetAllUsers()
         {
-            try
-            {
-                return db_Context.Users.ToList();
-            }
-            catch (Exception)
-            {
-                throw;
-            }          
+            return db_Context.Users.ToList();
         }
 
         public UserLoginResponse GetUserByMail(UserLoginRequest userLoginRequest)
         {
-            try
+            User user = db_Context.Users.FirstOrDefault(p => p.Mail == userLoginRequest.Mail);
+            
+            if (user.Password == userLoginRequest.Password)
             {
-                User user = db_Context.Users.FirstOrDefault(p => p.Mail == userLoginRequest.Mail);
                 UserLoginResponse userLoginResponse = new UserLoginResponse();
                 userLoginResponse.Mail = user.Mail;
                 userLoginResponse.Name = user.Name;
                 userLoginResponse.UserId = Convert.ToString(user.UserId);
                 return userLoginResponse;
             }
-            catch (Exception)
+            else
             {
                 return null;
-                throw;
             }
         }
 
         public User GetUserById(int id)
         {
-            try
-            {
-                return db_Context.Users.FirstOrDefault(p => p.UserId == id);
-            }
-            catch (Exception)
-            {
-                return null;
-                throw;
-            }           
+            return db_Context.Users.FirstOrDefault(p => p.UserId == id);
         }
 
         public bool UpdateUser(User user)

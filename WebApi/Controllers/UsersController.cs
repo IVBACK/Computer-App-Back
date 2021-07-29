@@ -42,19 +42,20 @@ namespace ComputerAPP.API.Controllers
         public IActionResult Login([FromBody] UserLoginRequest userLoginRequest)
         {
             UserLoginResponse userLoginResponse = sqlUserRepo.GetUserByMail(userLoginRequest);
+            
             if (userLoginResponse != null)
                 return Ok(userLoginResponse);
 
-            return NotFound();
+            return NotFound("Wrong Password Or Email");
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] User user)
+        public IActionResult Register([FromBody] User user)
         {
             if(sqlUserRepo.CreateUser(user))
                 return Ok(user);
 
-            return BadRequest("Invalid Name Or Email!");
+            return BadRequest("Invalid Name Or Email");
         }
 
         [HttpPut("{id}")]
