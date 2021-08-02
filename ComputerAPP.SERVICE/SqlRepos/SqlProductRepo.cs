@@ -6,8 +6,10 @@ using System.Linq;
 
 namespace ComputerAPP.SERVICE.SqlRepos
 {
+    //Keeping For Switching To Generic Repository Later.
     public class SqlProductRepo<TEntity> : IProductRepo<TEntity> where TEntity : class
     {
+
         private readonly ComputerAppDBContext db_Context;
 
         public SqlProductRepo(ComputerAppDBContext db)

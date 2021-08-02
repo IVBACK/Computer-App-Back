@@ -19,10 +19,20 @@ namespace ComputerAPP.SERVICE.SqlRepos
         {
             this.db_Context = db;
         }
+
+        public bool CheckEmailExists(string mail)
+        {
+            if (db_Context.Users.First(p => p.Mail == mail) != null)
+                return false;
+
+            return true;
+        }
         
         public bool CreateUser(User user)
         {
-            if(userValidation.IsNameValid(user.Name) && userValidation.IsEmailValid(user.Mail))
+            
+
+            if (userValidation.IsNameValid(user.Name) && userValidation.IsEmailValid(user.Mail))
             {
                 db_Context.Users.Add(user);
                 SaveChanges();

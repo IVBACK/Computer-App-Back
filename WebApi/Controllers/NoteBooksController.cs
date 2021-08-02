@@ -11,17 +11,17 @@ namespace ComputerAPP.Controllers
     
     public class NoteBooksController : ControllerBase
     {
-        private readonly SqlProductRepo<NoteBook> sqlNoteBookRepo;
+        private readonly SqlNotebookRepo sqlNoteBookRepo;
 
         public NoteBooksController(ComputerAppDBContext db)
         {
-            sqlNoteBookRepo = new SqlProductRepo<NoteBook>(db);
+            sqlNoteBookRepo = new SqlNotebookRepo(db);
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            IEnumerable<NoteBook> notebooks = sqlNoteBookRepo.GetAllProducts();
+            IEnumerable<NoteBook> notebooks = sqlNoteBookRepo.GetAllNotebooks();
             if (notebooks != null)
                 return Ok(notebooks);
 
@@ -31,7 +31,7 @@ namespace ComputerAPP.Controllers
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            NoteBook notebook = sqlNoteBookRepo.GetProductById(id);
+            NoteBook notebook = sqlNoteBookRepo.GetNotebookById(id);
             if (notebook != null)
                 return Ok(notebook);
 
@@ -41,7 +41,7 @@ namespace ComputerAPP.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]NoteBook notebook)
         {
-            if (sqlNoteBookRepo.CreateProduct(notebook))
+            if (sqlNoteBookRepo.CreateNotebook(notebook))
                 return Ok(notebook);
 
             return BadRequest();
@@ -50,7 +50,7 @@ namespace ComputerAPP.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, NoteBook notebook)
         {
-            if (sqlNoteBookRepo.UpdateProduct(notebook))
+            if (sqlNoteBookRepo.UpdateNotebook(notebook))
                 return Ok(notebook);
 
             return NotFound();
@@ -59,7 +59,7 @@ namespace ComputerAPP.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            if (sqlNoteBookRepo.DeleteProduct(id))
+            if (sqlNoteBookRepo.DeleteNotebook(id))
                 return Ok();
 
             return NotFound();

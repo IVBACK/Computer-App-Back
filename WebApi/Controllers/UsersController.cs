@@ -40,7 +40,7 @@ namespace ComputerAPP.API.Controllers
 
         [HttpPost("{login}")]
         public IActionResult Login([FromBody] UserLoginRequest userLoginRequest)
-        {
+        {          
             UserLoginResponse userLoginResponse = sqlUserRepo.GetUserByMail(userLoginRequest);
             
             if (userLoginResponse != null)
@@ -52,7 +52,10 @@ namespace ComputerAPP.API.Controllers
         [HttpPost]
         public IActionResult Register([FromBody] User user)
         {
-            if(sqlUserRepo.CreateUser(user))
+            if (!sqlUserRepo.CheckEmailExists(user.Mail))
+                return BadRequest("Account With This Email Already Exists");
+
+            if (sqlUserRepo.CreateUser(user))
                 return Ok(user);
 
             return BadRequest("Invalid Name Or Email");
