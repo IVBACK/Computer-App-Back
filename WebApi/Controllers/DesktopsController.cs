@@ -3,6 +3,7 @@ using ComputerAPP.DATA.DbContexts;
 using ComputerAPP.SERVICE.SqlRepos;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ComputerAPP.Api.Controllers
 {
@@ -10,17 +11,17 @@ namespace ComputerAPP.Api.Controllers
     [Route("api/[controller]")]
     public class DesktopsController : ControllerBase
     {
-        private readonly SqlDesktopRepo sqlDesktopRepo;
+        private readonly SqlProductRepo<Desktop> sqlDesktopRepo;
 
         public DesktopsController(ComputerAppDBContext db)
         {
-            sqlDesktopRepo = new SqlDesktopRepo(db);
+            sqlDesktopRepo = new SqlProductRepo<Desktop>(db);
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> GetAllAsync()
         {
-            IEnumerable<Desktop> desktops = sqlDesktopRepo.GetAllDesktops();
+            IEnumerable<Desktop> desktops = await sqlDesktopRepo.GetAllProducts();
             if (desktops != null)
                 return Ok(desktops);
 
@@ -28,9 +29,9 @@ namespace ComputerAPP.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetByIdAsync(int id)
         {
-            Desktop desktop = sqlDesktopRepo.GetDesktopById(id);
+            Desktop desktop = await sqlDesktopRepo.GetProductById(id);
             if (desktop != null)
                 return Ok(desktop);
 
@@ -38,27 +39,27 @@ namespace ComputerAPP.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Desktop desktop)
+        public async Task<IActionResult> PostAsync([FromBody] Desktop desktop)
         {
-            if (sqlDesktopRepo.CreateDesktop(desktop))
+            if (await sqlDesktopRepo.CreateProduct(desktop))
                 return Ok(desktop);
 
             return BadRequest();
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, Desktop desktop)
+        public async Task<IActionResult> PutAsync(int id, Desktop desktop)
         {
-            if (sqlDesktopRepo.UpdateDesktop(desktop))
+            if (await sqlDesktopRepo.UpdateProduct(desktop))
                 return Ok(desktop);
 
             return NotFound();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-            if (sqlDesktopRepo.DeleteDesktop(id))
+            if (await sqlDesktopRepo.DeleteProduct(id))
                 return Ok();
 
             return NotFound();

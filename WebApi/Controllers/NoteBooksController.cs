@@ -3,6 +3,7 @@ using ComputerAPP.DATA.DbContexts;
 using ComputerAPP.SERVICE.SqlRepos;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ComputerAPP.Controllers
 {
@@ -11,17 +12,17 @@ namespace ComputerAPP.Controllers
     
     public class NoteBooksController : ControllerBase
     {
-        private readonly SqlNotebookRepo sqlNoteBookRepo;
+        private readonly SqlProductRepo<NoteBook> sqlNoteBookRepo;
 
         public NoteBooksController(ComputerAppDBContext db)
         {
-            sqlNoteBookRepo = new SqlNotebookRepo(db);
+            sqlNoteBookRepo = new SqlProductRepo<NoteBook>(db);
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> GetAllAsync()
         {
-            IEnumerable<NoteBook> notebooks = sqlNoteBookRepo.GetAllNotebooks();
+            IEnumerable<NoteBook> notebooks = await sqlNoteBookRepo.GetAllProducts();
             if (notebooks != null)
                 return Ok(notebooks);
 
@@ -29,9 +30,9 @@ namespace ComputerAPP.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetByIdAsync(int id)
         {
-            NoteBook notebook = sqlNoteBookRepo.GetNotebookById(id);
+            NoteBook notebook = await sqlNoteBookRepo.GetProductById(id);
             if (notebook != null)
                 return Ok(notebook);
 
@@ -39,27 +40,27 @@ namespace ComputerAPP.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]NoteBook notebook)
+        public async Task<IActionResult> PostAsync([FromBody]NoteBook notebook)
         {
-            if (sqlNoteBookRepo.CreateNotebook(notebook))
+            if (await sqlNoteBookRepo.CreateProduct(notebook))
                 return Ok(notebook);
 
             return BadRequest();
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, NoteBook notebook)
+        public async Task<IActionResult> PutAsync(int id, NoteBook notebook)
         {
-            if (sqlNoteBookRepo.UpdateNotebook(notebook))
+            if (await sqlNoteBookRepo.UpdateProduct(notebook))
                 return Ok(notebook);
 
             return NotFound();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-            if (sqlNoteBookRepo.DeleteNotebook(id))
+            if (await sqlNoteBookRepo.DeleteProduct(id))
                 return Ok();
 
             return NotFound();

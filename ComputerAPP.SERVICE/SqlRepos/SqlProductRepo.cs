@@ -3,10 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ComputerAPP.SERVICE.SqlRepos
 {
-    //Keeping For Switching To Generic Repository Later.
+
     public class SqlProductRepo<TEntity> : IProductRepo<TEntity> where TEntity : class
     {
 
@@ -17,11 +18,12 @@ namespace ComputerAPP.SERVICE.SqlRepos
             this.db_Context = db;
         }
 
-        public bool CreateProduct(TEntity entity)
+        public async Task<bool> CreateProduct(TEntity entity)
         {
             try
             {
-                db_Context.Set<TEntity>().Add(entity);
+                await db_Context.Set<TEntity>().AddAsync(entity);
+                await db_Context.SaveChangesAsync();
                 return true;
             }
             catch (Exception)
@@ -31,11 +33,11 @@ namespace ComputerAPP.SERVICE.SqlRepos
             }           
         }
 
-        public bool DeleteProduct(int id)
+        public async Task<bool> DeleteProduct(int id)
         {
             try
             {
-                TEntity entity = db_Context.Set<TEntity>().Find(id);
+                TEntity entity = await db_Context.Set<TEntity>().FindAsync(id);
                 db_Context.Set<TEntity>().Remove(entity);
                 return true;
             }
@@ -46,11 +48,11 @@ namespace ComputerAPP.SERVICE.SqlRepos
             }          
         }
 
-        public IEnumerable<TEntity> GetAllProducts()
+        public async Task<IEnumerable<TEntity>> GetAllProducts()
         {
             try
             {
-                return db_Context.Set<TEntity>().ToList();
+                return await db_Context.Set<TEntity>().ToListAsync();
             }
             catch (Exception)
             {
@@ -59,11 +61,11 @@ namespace ComputerAPP.SERVICE.SqlRepos
             }          
         }
 
-        public TEntity GetProductById(int id)
+        public async Task<TEntity> GetProductById(int id)
         {
             try
             {
-                return db_Context.Set<TEntity>().Find(id);
+                return await db_Context.Set<TEntity>().FindAsync(id);
             }
             catch (Exception)
             {
@@ -72,12 +74,12 @@ namespace ComputerAPP.SERVICE.SqlRepos
             }           
         }
 
-        public bool UpdateProduct(TEntity entity)
+        public async Task<bool> UpdateProduct(TEntity entity)
         {
             try
             {
                 db_Context.Entry(entity).State = EntityState.Modified;
-                SaveChanges();
+                await db_Context.SaveChangesAsync();
                 return true;
             }
             catch (Exception)
@@ -85,11 +87,6 @@ namespace ComputerAPP.SERVICE.SqlRepos
                 return false;
                 throw new ArgumentNullException(nameof(entity));
             }
-        }
-
-        public void SaveChanges()
-        {
-            db_Context.SaveChanges();
         }
     }
 }
