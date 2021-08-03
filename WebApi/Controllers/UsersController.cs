@@ -1,14 +1,17 @@
 ﻿using ComputerAPP.CORE.Models;
 using ComputerAPP.DATA.DbContexts;
 using ComputerAPP.SERVICE.SqlRepos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ComputerAPP.API.Controllers
 {
+    
     [ApiController]
     [Route("api/[controller]")]
-    
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly SqlUserRepo sqlUserRepo;
@@ -18,10 +21,10 @@ namespace ComputerAPP.API.Controllers
             sqlUserRepo = new SqlUserRepo(db);
         }
 
-        [HttpGet]
-        public IActionResult Get()
+        [HttpGet]       
+        public async Task<IActionResult> GetAllAsync()
         {
-            IEnumerable<User> users = sqlUserRepo.GetAllUsers();
+            IEnumerable<User> users = await sqlUserRepo.GetAllUsers();
             if (users != null)
                 return Ok(users);
 
@@ -29,51 +32,56 @@ namespace ComputerAPP.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetByIdAsync(int id)
         {
-            User user = sqlUserRepo.GetUserById(id);
+            User user = await sqlUserRepo.GetUserById(id);
             if (user != null)
                 return Ok(user);
             
             return NotFound();
         }
 
-        [HttpPost("{login}")]
-        public IActionResult Login([FromBody] UserLoginRequest userLoginRequest)
-        {          
-            UserLoginResponse userLoginResponse = sqlUserRepo.GetUserByMail(userLoginRequest);
+        [AllowAnonymous]
+        [HttpPost("login")]      
+        public async Task<IActionResult> LoginAsync([FromBody] UserLoginRequest userLoginRequest)
+        {       
+            UserLoginResponse userLoginResponse = await sqlUserRepo.GetUserByMail(userLoginRequest);
             
             if (userLoginResponse != null)
+            {               
                 return Ok(userLoginResponse);
+            }              
 
             return NotFound("Wrong Password Or Email");
         }
 
-        [HttpPost]
-        public IActionResult Register([FromBody] User user)
+
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public async Task<IActionResult> RegisterAsync([FromBody] User user)
         {
-            if (!sqlUserRepo.CheckEmailExists(user.Mail))
+            if (!await sqlUserRepo.CheckEmailExists(user.Email))
                 return BadRequest("Account With This Email Already Exists");
 
-            if (sqlUserRepo.CreateUser(user))
+            if (await sqlUserRepo.CreateUser(user))
                 return Ok(user);
 
             return BadRequest("Invalid Name Or Email");
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(User user)
+        public async Task<IActionResult> PutAsync(User user)
         {
-            if(sqlUserRepo.UpdateUser(user))
+            if(await sqlUserRepo.UpdateUser(user))
                 return Ok(user);
 
             return NotFound();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-            if(sqlUserRepo.DeleteUser(id))
+            if(await sqlUserRepo.DeleteUser(id))
                 return Ok();
 
             return NotFound();

@@ -13,7 +13,7 @@ namespace ComputerAPP.CORE.Models
 
         [Required]
         [StringLength(50)]
-        public string Mail { get; set; }
+        public string Email { get; set; }
 
         [Required]
         [StringLength(20)]

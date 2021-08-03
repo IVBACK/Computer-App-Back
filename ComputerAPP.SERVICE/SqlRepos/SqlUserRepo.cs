@@ -1,11 +1,13 @@
 ﻿using ComputerAPP.CORE.Models;
 using ComputerAPP.DATA.DbContexts;
 using ComputerAPP.SERVICE.IRepos;
+using ComputerAPP.SERVICE.Security;
 using ComputerAPP.SERVICE.Validations;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ComputerAPP.SERVICE.SqlRepos
 {
@@ -20,34 +22,32 @@ namespace ComputerAPP.SERVICE.SqlRepos
             this.db_Context = db;
         }
 
-        public bool CheckEmailExists(string mail)
+        public async Task<bool> CheckEmailExists(string email)
         {
-            if (db_Context.Users.First(p => p.Mail == mail) != null)
+            if (await db_Context.Users.FirstOrDefaultAsync(p => p.Email == email) != null)
                 return false;
 
             return true;
         }
         
-        public bool CreateUser(User user)
-        {
-            
-
-            if (userValidation.IsNameValid(user.Name) && userValidation.IsEmailValid(user.Mail))
+        public async Task<bool> CreateUser(User user)
+        {           
+            if (userValidation.IsNameValid(user.Name) && userValidation.IsEmailValid(user.Email))
             {
-                db_Context.Users.Add(user);
-                SaveChanges();
+                await db_Context.Users.AddAsync(user);
+                await db_Context.SaveChangesAsync();
                 return true;
             }
             return false;           
         }
 
-        public bool DeleteUser(int id)
+        public async Task<bool> DeleteUser(int id)
         {
             try
             {
-                var user = db_Context.Users.Find(id);
+                var user = await db_Context.Users.FindAsync(id);
                 db_Context.Users.Remove(user);
-                SaveChanges();
+                await db_Context.SaveChangesAsync();
                 return true;
             }
             catch (Exception)
@@ -57,21 +57,24 @@ namespace ComputerAPP.SERVICE.SqlRepos
             }          
         }
 
-        public IEnumerable<User> GetAllUsers()
+        public async Task<IEnumerable<User>> GetAllUsers()
         {
-            return db_Context.Users.ToList();
+            return await db_Context.Users.ToListAsync();
         }
 
-        public UserLoginResponse GetUserByMail(UserLoginRequest userLoginRequest)
+        public async Task<UserLoginResponse> GetUserByMail(UserLoginRequest userLoginRequest)
         {
-            User user = db_Context.Users.FirstOrDefault(p => p.Mail == userLoginRequest.Mail);
+
+            User user = await db_Context.Users.FirstOrDefaultAsync(p => p.Email == userLoginRequest.Email);
             
             if (user.Password == userLoginRequest.Password)
             {
+                TokenHandler tokenHandler = new TokenHandler();
                 UserLoginResponse userLoginResponse = new UserLoginResponse();
-                userLoginResponse.Mail = user.Mail;
+                userLoginResponse.Email = user.Email;
                 userLoginResponse.Name = user.Name;
                 userLoginResponse.UserId = Convert.ToString(user.UserId);
+                userLoginResponse.Token = tokenHandler.GenerateToken(userLoginResponse.Email);
                 return userLoginResponse;
             }
             else
@@ -80,17 +83,17 @@ namespace ComputerAPP.SERVICE.SqlRepos
             }
         }
 
-        public User GetUserById(int id)
+        public async Task<User> GetUserById(int id)
         {
-            return db_Context.Users.FirstOrDefault(p => p.UserId == id);
+            return await db_Context.Users.FirstOrDefaultAsync(p => p.UserId == id);
         }
 
-        public bool UpdateUser(User user)
+        public async Task<bool> UpdateUser(User user)
         {
             try
             {
                 db_Context.Entry(user).State = EntityState.Modified;
-                SaveChanges();
+                await db_Context.SaveChangesAsync();
                 return true;
             }
             catch (Exception)
@@ -98,11 +101,6 @@ namespace ComputerAPP.SERVICE.SqlRepos
                 return false;
                 throw new ArgumentNullException(nameof(user));
             }
-        }
-
-        public void SaveChanges()
-        {
-            db_Context.SaveChanges();
         }
     }
 }

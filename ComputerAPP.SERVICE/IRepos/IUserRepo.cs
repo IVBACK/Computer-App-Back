@@ -1,16 +1,17 @@
 ﻿using ComputerAPP.CORE.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ComputerAPP.SERVICE.IRepos
 {
     interface IUserRepo
     {
-        void SaveChanges();
-        IEnumerable<User> GetAllUsers();
-        User GetUserById(int id);
-        bool CreateUser(User user);
-        UserLoginResponse GetUserByMail(UserLoginRequest userLoginRequest);
-        bool UpdateUser(User user);
-        bool DeleteUser(int id);
+        Task<bool> CheckEmailExists(string mail);
+        Task<IEnumerable<User>> GetAllUsers();
+        Task<User> GetUserById(int id);
+        Task<bool> CreateUser(User user);
+        Task<UserLoginResponse> GetUserByMail(UserLoginRequest userLoginRequest);
+        Task<bool> UpdateUser(User user);
+        Task<bool> DeleteUser(int id);
     }
 }
