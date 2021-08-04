@@ -22,7 +22,7 @@ namespace ComputerAPP.SERVICE.SqlRepos
             this.db_Context = db;
         }
 
-        public async Task<bool> CheckEmailExists(string email)
+        public async Task<bool> CheckUserWithEmail(string email)
         {
             if (await db_Context.Users.FirstOrDefaultAsync(p => p.Email == email) != null)
                 return false;
@@ -64,23 +64,24 @@ namespace ComputerAPP.SERVICE.SqlRepos
 
         public async Task<UserLoginResponse> GetUserByMail(UserLoginRequest userLoginRequest)
         {
-
             User user = await db_Context.Users.FirstOrDefaultAsync(p => p.Email == userLoginRequest.Email);
-            
-            if (user.Password == userLoginRequest.Password)
+            if (user != null)
             {
-                TokenHandler tokenHandler = new TokenHandler();
-                UserLoginResponse userLoginResponse = new UserLoginResponse();
-                userLoginResponse.Email = user.Email;
-                userLoginResponse.Name = user.Name;
-                userLoginResponse.UserId = Convert.ToString(user.UserId);
-                userLoginResponse.Token = tokenHandler.GenerateToken(userLoginResponse.Email);
-                return userLoginResponse;
+                if (user.Password == userLoginRequest.Password)
+                {
+                    TokenHandler tokenHandler = new TokenHandler();
+                    UserLoginResponse userLoginResponse = new UserLoginResponse();
+                    userLoginResponse.Email = user.Email;
+                    userLoginResponse.Name = user.Name;
+                    userLoginResponse.UserId = Convert.ToString(user.UserId);
+                    userLoginResponse.Token = tokenHandler.GenerateToken(userLoginResponse.Email);
+                    return userLoginResponse;
+                }
+                else
+                    return null;
             }
             else
-            {
-                return null;
-            }
+                return null;                 
         }
 
         public async Task<User> GetUserById(int id)

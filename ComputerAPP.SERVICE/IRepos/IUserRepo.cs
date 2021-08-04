@@ -6,7 +6,7 @@ namespace ComputerAPP.SERVICE.IRepos
 {
     interface IUserRepo
     {
-        Task<bool> CheckEmailExists(string mail);
+        Task<bool> CheckUserWithEmail(string mail);
         Task<IEnumerable<User>> GetAllUsers();
         Task<User> GetUserById(int id);
         Task<bool> CreateUser(User user);

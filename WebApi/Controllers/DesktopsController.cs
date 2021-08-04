@@ -1,6 +1,7 @@
 ﻿using ComputerAPP.CORE.Models;
 using ComputerAPP.DATA.DbContexts;
 using ComputerAPP.SERVICE.SqlRepos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace ComputerAPP.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class DesktopsController : ControllerBase
     {
         private readonly SqlProductRepo<Desktop> sqlDesktopRepo;

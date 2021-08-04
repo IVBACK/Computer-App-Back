@@ -60,7 +60,7 @@ namespace ComputerAPP.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> RegisterAsync([FromBody] User user)
         {
-            if (!await sqlUserRepo.CheckEmailExists(user.Email))
+            if (!await sqlUserRepo.CheckUserWithEmail(user.Email))
                 return BadRequest("Account With This Email Already Exists");
 
             if (await sqlUserRepo.CreateUser(user))
