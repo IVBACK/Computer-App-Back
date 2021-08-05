@@ -31,6 +31,16 @@ namespace ComputerAPP.API.Controllers
             return NotFound();
         }
 
+        [HttpGet("search")]
+        public IActionResult GetUserBySearch([FromBody] string search)
+        {
+            IEnumerable<User> usersFiltered =  sqlUserRepo.SearchUser(search);
+            if (usersFiltered != null)
+                return Ok(usersFiltered);
+
+            return NotFound();
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {

@@ -9,6 +9,7 @@ namespace ComputerAPP.SERVICE.IRepos
         Task<bool> CheckUserWithEmail(string mail);
         Task<IEnumerable<User>> GetAllUsers();
         Task<User> GetUserById(int id);
+        IEnumerable<User> SearchUser(string search);
         Task<bool> CreateUser(User user);
         Task<UserLoginResponse> GetUserByMail(UserLoginRequest userLoginRequest);
         Task<bool> UpdateUser(User user);

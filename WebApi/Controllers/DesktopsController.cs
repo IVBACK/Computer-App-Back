@@ -13,27 +13,28 @@ namespace ComputerAPP.Api.Controllers
     [Authorize]
     public class DesktopsController : ControllerBase
     {
-        private readonly SqlProductRepo<Desktop> sqlDesktopRepo;
+        private readonly SqlDesktopRepo sqlDesktopRepo;
 
         public DesktopsController(ComputerAppDBContext db)
         {
-            sqlDesktopRepo = new SqlProductRepo<Desktop>(db);
+            sqlDesktopRepo = new SqlDesktopRepo(db);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {
-            IEnumerable<Desktop> desktops = await sqlDesktopRepo.GetAllProducts();
+            IEnumerable<Desktop> desktops = await sqlDesktopRepo.GetAllDesktops();
             if (desktops != null)
                 return Ok(desktops);
 
             return NotFound();
         }
 
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
-            Desktop desktop = await sqlDesktopRepo.GetProductById(id);
+            Desktop desktop = await sqlDesktopRepo.GetDesktopById(id);
             if (desktop != null)
                 return Ok(desktop);
 
@@ -43,7 +44,7 @@ namespace ComputerAPP.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody] Desktop desktop)
         {
-            if (await sqlDesktopRepo.CreateProduct(desktop))
+            if (await sqlDesktopRepo.AddDesktop(desktop))
                 return Ok(desktop);
 
             return BadRequest();
@@ -52,7 +53,7 @@ namespace ComputerAPP.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAsync(int id, Desktop desktop)
         {
-            if (await sqlDesktopRepo.UpdateProduct(desktop))
+            if (await sqlDesktopRepo.UpdateDesktop(desktop))
                 return Ok(desktop);
 
             return NotFound();
@@ -61,7 +62,7 @@ namespace ComputerAPP.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
-            if (await sqlDesktopRepo.DeleteProduct(id))
+            if (await sqlDesktopRepo.DeleteDesktop(id))
                 return Ok();
 
             return NotFound();

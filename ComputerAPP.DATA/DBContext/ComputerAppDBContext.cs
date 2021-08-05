@@ -1,5 +1,7 @@
 ﻿using ComputerAPP.CORE.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ComputerAPP.DATA.DbContexts
 {
@@ -11,7 +13,7 @@ namespace ComputerAPP.DATA.DbContexts
 
         public DbSet<Desktop> Desktops { get; set; }
 
-        public DbSet<NoteBook> NoteBooks { get; set; }
+        public DbSet<Notebook> NoteBooks { get; set; }
 
         public DbSet<User> Users { get; set; }
     }

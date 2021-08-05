@@ -4,6 +4,7 @@ using ComputerAPP.SERVICE.IRepos;
 using ComputerAPP.SERVICE.Security;
 using ComputerAPP.SERVICE.Validations;
 using Microsoft.EntityFrameworkCore;
+using NinjaNye.SearchExtensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,6 +62,20 @@ namespace ComputerAPP.SERVICE.SqlRepos
         {
             return await db_Context.Users.ToListAsync();
         }
+
+        public IEnumerable<User> SearchUser(string search)
+        {
+            try
+            {
+                return db_Context.Users.Where(p => p.Name.Contains(search));
+            }
+            catch (Exception)
+            {
+                return null;
+                throw;
+            }
+        }
+
 
         public async Task<UserLoginResponse> GetUserByMail(UserLoginRequest userLoginRequest)
         {

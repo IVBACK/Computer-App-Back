@@ -2,7 +2,7 @@
 
 namespace ComputerAPP.CORE.Models
 {
-    public class NoteBook
+    public class Notebook
     {
         [Key]     
         public int? NoteBookId { get; set; }

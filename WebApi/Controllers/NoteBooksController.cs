@@ -13,19 +13,29 @@ namespace ComputerAPP.Controllers
     [Authorize]
     public class NoteBooksController : ControllerBase
     {
-        private readonly SqlProductRepo<NoteBook> sqlNoteBookRepo;
+        private readonly SqlNotebookRepo sqlNoteBookRepo;
 
         public NoteBooksController(ComputerAppDBContext db)
         {
-            sqlNoteBookRepo = new SqlProductRepo<NoteBook>(db);
+            sqlNoteBookRepo = new SqlNotebookRepo(db);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {
-            IEnumerable<NoteBook> notebooks = await sqlNoteBookRepo.GetAllProducts();
+            IEnumerable<Notebook> notebooks = await sqlNoteBookRepo.GetAllNotebooks();
             if (notebooks != null)
                 return Ok(notebooks);
+
+            return NotFound();
+        }
+
+        [HttpPost("search")]
+        public IActionResult GetNotebooksBySearch([FromBody] string search)
+        {
+            IEnumerable<Notebook> notebooksFiltered = sqlNoteBookRepo.SearchNotebooks(search);
+            if (notebooksFiltered != null)
+                return Ok(notebooksFiltered);
 
             return NotFound();
         }
@@ -33,7 +43,7 @@ namespace ComputerAPP.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
-            NoteBook notebook = await sqlNoteBookRepo.GetProductById(id);
+            Notebook notebook = await sqlNoteBookRepo.GetNotebookById(id);
             if (notebook != null)
                 return Ok(notebook);
 
@@ -41,18 +51,18 @@ namespace ComputerAPP.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody]NoteBook notebook)
+        public async Task<IActionResult> PostAsync([FromBody]Notebook notebook)
         {
-            if (await sqlNoteBookRepo.CreateProduct(notebook))
+            if (await sqlNoteBookRepo.AddNotebook(notebook))
                 return Ok(notebook);
 
             return BadRequest();
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAsync(int id, NoteBook notebook)
+        public async Task<IActionResult> PutAsync(int id, Notebook notebook)
         {
-            if (await sqlNoteBookRepo.UpdateProduct(notebook))
+            if (await sqlNoteBookRepo.UpdateNotebook(notebook))
                 return Ok(notebook);
 
             return NotFound();
@@ -61,7 +71,7 @@ namespace ComputerAPP.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
-            if (await sqlNoteBookRepo.DeleteProduct(id))
+            if (await sqlNoteBookRepo.DeleteNotebook(id))
                 return Ok();
 
             return NotFound();
